@@ -10,7 +10,7 @@ public interface ProdutoDomainService {
 
 	public String registrarProduto(ProdutoRequestDto request);
 
-	public ProdutoResponseDto editarProduto(UUID id, ProdutoRequestDto request);
+	public ProdutoResponseDto atualizarProduto(UUID id, ProdutoRequestDto request);
 
 	public String excluirProduto(UUID id);
 

@@ -19,7 +19,7 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 	}
 
 	@Override
-	public ProdutoResponseDto editarProduto(UUID id, ProdutoRequestDto request) {
+	public ProdutoResponseDto atualizarProduto(UUID id, ProdutoRequestDto request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
