@@ -8,4 +8,5 @@ import com.example.demo.domain.models.entities.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, UUID> {
 
+	boolean existsByCategoriaId(UUID categoriaId);
 }
