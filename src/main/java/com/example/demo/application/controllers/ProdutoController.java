@@ -18,6 +18,7 @@ import com.example.demo.application.dtos.ProdutoResponseDto;
 import com.example.demo.domain.services.interfaces.ProdutoDomainService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -28,13 +29,13 @@ public class ProdutoController {
 	
 	@Operation(summary = "Serviço para registrar um produto.")
 	@PostMapping
-	public String post(@RequestBody ProdutoRequestDto request) {
+	public String post(@RequestBody @Valid ProdutoRequestDto request) {
 		return produtoDomainService.registrarProduto(request);
 	}
 	
 	@Operation(summary = "Serviço para atualizar um produto.")
 	@PutMapping("/{id}")
-	public ProdutoResponseDto put(@PathVariable UUID id, @RequestBody ProdutoRequestDto request) {
+	public ProdutoResponseDto put(@PathVariable UUID id, @RequestBody @Valid ProdutoRequestDto request) {
 		return produtoDomainService.atualizarProduto(id, request);
 	}
 	

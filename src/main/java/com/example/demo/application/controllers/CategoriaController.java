@@ -18,6 +18,7 @@ import com.example.demo.application.dtos.CategoriaResponseDto;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -28,13 +29,13 @@ public class CategoriaController {
 	
 	@Operation(summary = "Serviço para registrar uma categoria.")
 	@PostMapping
-	public String post(@RequestBody CategoriaRequestDto request) {
+	public String post(@RequestBody @Valid CategoriaRequestDto request) {
 		return categoriaDomainService.registrarCategoria(request);
 	}
 	
 	@Operation(summary = "Serviço para atualizar uma categoria.")
 	@PutMapping("/{id}")
-	public CategoriaResponseDto put(@PathVariable UUID id, @RequestBody CategoriaRequestDto request) {
+	public CategoriaResponseDto put(@PathVariable UUID id, @RequestBody @Valid CategoriaRequestDto request) {
 		return categoriaDomainService.editarCategoria(id, request);
 	}
 	
