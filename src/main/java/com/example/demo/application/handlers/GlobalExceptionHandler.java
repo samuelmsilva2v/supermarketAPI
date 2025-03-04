@@ -16,7 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(RuntimeException ex) {
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
