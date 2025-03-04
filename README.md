@@ -1,7 +1,7 @@
 # API Supermercado 🛒
 [🇺🇸 Read in English](#supermarket-api)
 
-API RESTful desenvolvida em **Java** e **Spring Boot** para controle e gerenciamento de produtos de um supermercado, permitindo operações de CRUD (Create, Read, Update, Delete).
+🛒 API RESTful desenvolvida em **Java** e **Spring Boot** para controle e gerenciamento de produtos de um supermercado, permitindo operações de CRUD (Create, Read, Update, Delete).
 
 O sistema garante que as regras de negócio sejam seguidas, como a obrigatoriedade de categorias, prevenção de cadastro duplicado e restrições na exclusão de produtos com estoque.
 
@@ -84,10 +84,10 @@ mvn test
 
 ---
 
-# Supermarket API 🛒
+# Supermarket API
 [🇧🇷 Leia em Português](#api-supermercado)
 
-RESTful API developed in Java and Spring Boot for controlling and managing supermarket products, allowing CRUD operations (Create, Read, Update, Delete).
+🛒 RESTful API developed in Java and Spring Boot for controlling and managing supermarket products, allowing CRUD operations (Create, Read, Update, Delete).
 
 The system ensures that business rules are followed, such as mandatory categories, prevention of duplicate registrations, and restrictions on deleting products with stock.
 
