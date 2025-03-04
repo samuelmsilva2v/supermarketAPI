@@ -29,7 +29,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Serviço para registrar um produto.")
 	@PostMapping
-	public String post(@RequestBody @Valid ProdutoRequestDto request) {
+	public ProdutoResponseDto post(@RequestBody @Valid ProdutoRequestDto request) {
 		return produtoDomainService.registrarProduto(request);
 	}
 	

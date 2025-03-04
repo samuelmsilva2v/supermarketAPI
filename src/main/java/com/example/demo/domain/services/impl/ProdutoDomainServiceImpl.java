@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.application.dtos.ProdutoRequestDto;
 import com.example.demo.application.dtos.ProdutoResponseDto;
+import com.example.demo.domain.exceptions.ProdutoComEstoqueException;
 import com.example.demo.domain.exceptions.ProdutoComNomeDuplicadoException;
 import com.example.demo.domain.models.entities.Produto;
 import com.example.demo.domain.services.interfaces.ProdutoDomainService;
@@ -30,7 +31,7 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public String registrarProduto(ProdutoRequestDto request) {
+	public ProdutoResponseDto registrarProduto(ProdutoRequestDto request) {
 
 		if (produtoRepository.existsByNome(request.getNome()))
 			throw new ProdutoComNomeDuplicadoException(request.getNome());
@@ -44,7 +45,7 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 
 		produtoRepository.save(produto);
 
-		return "Produto cadastrado com sucesso!";
+		return modelMapper.map(produto, ProdutoResponseDto.class);
 	}
 
 	@Override
@@ -74,6 +75,9 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 
 		if (!produtoRepository.existsById(id))
 			throw new EntityNotFoundException("Produto com ID " + id + " não encontrada.");
+		
+		if (produtoRepository.findById(id).get().getQuantidade() > 0)
+			throw new ProdutoComEstoqueException(produtoRepository.findById(id).get().getNome(), produtoRepository.findById(id).get().getQuantidade());
 
 		produtoRepository.deleteById(id);
 

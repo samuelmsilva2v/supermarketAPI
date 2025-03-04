@@ -29,7 +29,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Serviço para registrar uma categoria.")
 	@PostMapping
-	public String post(@RequestBody @Valid CategoriaRequestDto request) {
+	public CategoriaResponseDto post(@RequestBody @Valid CategoriaRequestDto request) {
 		return categoriaDomainService.registrarCategoria(request);
 	}
 	

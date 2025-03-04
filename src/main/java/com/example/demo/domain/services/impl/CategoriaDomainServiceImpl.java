@@ -30,7 +30,7 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public String registrarCategoria(CategoriaRequestDto request) {
+	public CategoriaResponseDto registrarCategoria(CategoriaRequestDto request) {
 
 		if (categoriaRepository.existsByNome(request.getNome()))
 			throw new CategoriaComNomeDuplicadoException(request.getNome());
@@ -41,7 +41,7 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 		categoriaRepository.save(categoria);
 
-		return "Categoria registrada com sucesso!";
+		return modelMapper.map(categoria, CategoriaResponseDto.class);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import com.example.demo.application.dtos.CategoriaResponseDto;
 
 public interface CategoriaDomainService {
 
-	public String registrarCategoria(CategoriaRequestDto request);
+	public CategoriaResponseDto registrarCategoria(CategoriaRequestDto request);
 	
 	public CategoriaResponseDto editarCategoria(UUID id, CategoriaRequestDto request);
 	

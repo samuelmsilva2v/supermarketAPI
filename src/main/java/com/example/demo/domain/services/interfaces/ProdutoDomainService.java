@@ -8,7 +8,7 @@ import com.example.demo.application.dtos.ProdutoResponseDto;
 
 public interface ProdutoDomainService {
 
-	public String registrarProduto(ProdutoRequestDto request);
+	public ProdutoResponseDto registrarProduto(ProdutoRequestDto request);
 
 	public ProdutoResponseDto atualizarProduto(UUID id, ProdutoRequestDto request);
 
