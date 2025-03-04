@@ -1,4 +1,4 @@
-# API Supermercado 🛒
+# API Supermercado
 [🇺🇸 Read in English](#supermarket-api)
 
 🛒 API RESTful desenvolvida em **Java** e **Spring Boot** para controle e gerenciamento de produtos de um supermercado, permitindo operações de CRUD (Create, Read, Update, Delete).
