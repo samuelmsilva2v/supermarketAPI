@@ -99,4 +99,10 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 				.toList();
 	}
 
+	@Override
+	public List<ProdutoResponseDto> consultarProdutoPorNome(String nome) {
+		return produtoRepository.findByName(nome).stream().map(produto -> modelMapper.map(produto, ProdutoResponseDto.class))
+				.toList();
+	}
+
 }

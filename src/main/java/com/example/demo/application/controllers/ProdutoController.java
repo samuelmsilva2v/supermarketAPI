@@ -56,4 +56,10 @@ public class ProdutoController {
 	public List<ProdutoResponseDto> getAll() {
 		return produtoDomainService.consultarProdutos();
 	}
+	
+	@Operation(summary = "Serviço para consultar produtos por nome.")
+	@GetMapping("/consultar/{nome}")
+	public List<ProdutoResponseDto> getByName(@PathVariable String nome) {
+		return produtoDomainService.consultarProdutoPorNome(nome);
+	}
 }

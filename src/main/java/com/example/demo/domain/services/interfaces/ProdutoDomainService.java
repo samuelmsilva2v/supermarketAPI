@@ -15,6 +15,8 @@ public interface ProdutoDomainService {
 	public String excluirProduto(UUID id);
 
 	public ProdutoResponseDto consultarProdutoPorId(UUID id);
+	
+	public List<ProdutoResponseDto> consultarProdutoPorNome(String nome);
 
 	public List<ProdutoResponseDto> consultarProdutos();
 }
