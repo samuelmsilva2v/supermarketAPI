@@ -2,6 +2,7 @@ package com.example.demo.domain.services.impl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.application.dtos.CategoriaRequestDto;
 import com.example.demo.application.dtos.CategoriaResponseDto;
+import com.example.demo.application.dtos.DashboardResponseDto;
 import com.example.demo.domain.exceptions.CategoriaComNomeDuplicadoException;
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
@@ -89,6 +91,14 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 		return categoriaRepository.findAll().stream()
 				.map(categoria -> modelMapper.map(categoria, CategoriaResponseDto.class)).toList();
+	}
+
+	@Override
+	public List<DashboardResponseDto> buscarQuantidadePorCategoria() {
+		return categoriaRepository.searchQuantityByCategory()
+                .stream()
+                .map(dto -> new DashboardResponseDto(dto.getNomeCategoria(), dto.getQtdProdutos()))
+                .collect(Collectors.toList());
 	}
 
 }
