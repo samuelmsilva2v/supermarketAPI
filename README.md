@@ -23,6 +23,8 @@ O sistema garante que as regras de negócio sejam seguidas, como a obrigatorieda
 * Editar informações de um produto existente.
 
 * Excluir produtos, desde que o estoque seja igual a 0.
+  
+* Apresentação de um dashboard com gráfico para consulta de produtos cadastrados por categoria.
 
 ### Regras de negócio
 * Não pode cadastrar produtos com o mesmo nome.
@@ -34,7 +36,7 @@ O sistema garante que as regras de negócio sejam seguidas, como a obrigatorieda
 * Ao cadastrar ou editar um produto, é obrigatório informar uma categoria.
 
 ## Tecnologias Utilizadas
-
+#### Back-end:
 * Java 21
 * Spring Boot
 * Spring Data JPA
@@ -43,6 +45,11 @@ O sistema garante que as regras de negócio sejam seguidas, como a obrigatorieda
 * Docker (para virtualização do banco de dados)
 * JUnit (para testes unitários)
 * Swagger (para documentação)
+#### Front-end:
+* Angular 19
+* Bootstrap
+* HttpClient (integração com back-end)
+* Angular Highcharts (construção do dashboard)
 
 ## Endpoints
 
@@ -64,8 +71,13 @@ O sistema garante que as regras de negócio sejam seguidas, como a obrigatorieda
 | GET    | `/api/categorias/{id}` | Consulta uma categoria através do ID |
 | DELETE | `/api/categorias/{id}` | Exclui uma categoria                 |
 
+- #### Dashboard
+| Método | Endpoint                           | Descrição                                     |
+|--------|------------------------------------|-----------------------------------------------|
+| GET    | `/api/dashboard/produto-categoria` | Consulta quantidade de produtos por categoria |
+
 ## Instalação e Configuração
-**1. Clonar o Repositório**
+**1. Clonar o Repositório do Back-end**
 ```bash
  git clone https://github.com/samuelmsilva2v/supermarketAPI.git
  cd supermarketAPI
@@ -82,11 +94,36 @@ mvn spring-boot:run
 ```
 A API estará disponível em http://localhost:8080/swagger-ui/index.html#/.
 
+**4. Clonar o Repositório do Front-end**
+```bash
+ git clone https://github.com/samuelmsilva2v/webSupermarket.git
+ cd webSupermarket
+```
+
+**5. Instale as dependências do projeto:**
+```bash
+npm install
+```
+
+**6. Executar o front-end:**
+```bash
+$ ng s -o 
+```
+Isso irá iniciar o servidor de desenvolvimento na URL http://localhost:4200/. Você pode abrir seu navegador e acessar essa URL para visualizar a aplicação.
+
 ### Testes
 Para rodar os testes automatizados
 ```bash
 mvn test
 ```
+#### Dashboard Produtos / Categorias
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143148.png)
+#### Página de cadastro de produtos
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143205.png)
+#### Página de consulta de produtos
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143223.png)
+#### Página de edição de produtos
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143244.png)
 
 ---
 
@@ -109,6 +146,8 @@ The system ensures that business rules are followed, such as mandatory categorie
 * Edit information of an existing product.
 
 * Delete products, as long as the stock is equal to 0.
+  
+* Presentation of a dashboard with a chart for querying registered products by category.
 
 ### Business Rules
 * Products with the same name cannot be registered.
@@ -120,7 +159,7 @@ The system ensures that business rules are followed, such as mandatory categorie
 * When registering or editing a product, a category must be provided.
 
 ## Technologies Used
-
+### Back-end:
 * Java 21
 * Spring Boot
 * Spring Data JPA
@@ -129,6 +168,11 @@ The system ensures that business rules are followed, such as mandatory categorie
 * Docker (for database virtualization)
 * JUnit (for unit testing)
 * Swagger (for documentation)
+#### Front-end:
+* Angular 19
+* Bootstrap
+* HttpClient (integration with back-end)
+* Angular Highcharts (dashboard construction)
 
 ## Endpoints
 
@@ -150,6 +194,11 @@ The system ensures that business rules are followed, such as mandatory categorie
 | GET    | `/api/categorias/{id}` | Retrieves a category by ID |
 | DELETE | `/api/categorias/{id}` | Deletes a category         |
 
+- #### Dashboard
+| Method | Endpoint                           | Description                                |
+|--------|------------------------------------|--------------------------------------------|
+| GET    | `/api/dashboard/produto-categoria` | Query the quantity of products by category |
+
 ## Installation and Configuration
 **1. Clone the Repository**
 ```bash
@@ -168,8 +217,35 @@ mvn spring-boot:run
 ```
 The API will be available at http://localhost:8080/swagger-ui/index.html#/.
 
+**4. Clone the Front-end Repository**
+```bash
+git clone https://github.com/samuelmsilva2v/webSupermarket.git
+cd webSupermarket
+```
+
+**5. Install the project dependencies:**
+```bash
+npm install
+```
+
+**6. Run the front-end:**
+```bash
+ng s -o
+```
+
+This will start the development server at URL http://localhost:4200/. You can open your browser and access this URL to view the application.
+
 ### Testing
 To run automated tests
 ```bash
 mvn test
 ```
+
+#### Products / Categories Dashboard
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143148.png)
+#### Product Registration Page
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143205.png)
+#### Product Query Page
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143223.png)
+#### Product Editing Page
+![](https://github.com/samuelmsilva2v/assets/blob/main/webSupermarket/Captura%20de%20tela%202025-03-15%20143244.png)
