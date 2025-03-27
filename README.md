@@ -63,13 +63,14 @@ O sistema garante que as regras de negócio sejam seguidas, como a obrigatorieda
 ## Endpoints
 
 - #### Produtos
-| Método | Endpoint             | Descrição                         |
-|--------|----------------------|-----------------------------------|
-| POST   | `/api/produtos`      | Cadastra um novo produto          |
-| PUT    | `/api/produtos/{id}` | Edita os dados de um produto      |
-| GET    | `/api/produtos`      | Consulta todos os produtos        |
-| GET    | `/api/produtos/{id}` | Consulta um produto através do ID |
-| DELETE | `/api/produtos/{id}` | Exclui um produto                 |
+| Método | Endpoint                | Descrição                         |
+|--------|-------------------------|-----------------------------------|
+| POST   | `/api/produtos`         | Cadastra um novo produto          |
+| PUT    | `/api/produtos/{id}`    | Edita os dados de um produto      |
+| GET    | `/api/produtos`         | Consulta todos os produtos        |
+| GET    | `/api/produtos/{id}`    | Consulta um produto através do ID |
+| GET    | `/api/consultar/{nome}` | Consulta produtos através do Nome |
+| DELETE | `/api/produtos/{id}`    | Exclui um produto                 |
 
 - #### Categorias
 | Método | Endpoint               | Descrição                            |
@@ -223,13 +224,14 @@ The system ensures that business rules are followed, such as mandatory categorie
 ## Endpoints
 
 - #### Products
-| Method | Endpoint             | Description               |
-|--------|----------------------|---------------------------|
-| POST   | `/api/produtos`      | Registers a new product   |
-| PUT    | `/api/produtos/{id}` | Edits product data        |
-| GET    | `/api/produtos`      | Retrieves all products    |
-| GET    | `/api/produtos/{id}` | Retrieves a product by ID |
-| DELETE | `/api/produtos/{id}` | Deletes a product         |
+| Method | Endpoint                | Description                |
+|--------|-------------------------|----------------------------|
+| POST   | `/api/produtos`         | Registers a new product    |
+| PUT    | `/api/produtos/{id}`    | Edits product data         |
+| GET    | `/api/produtos`         | Retrieves all products     |
+| GET    | `/api/produtos/{id}`    | Retrieves a product by ID  |
+| GET    | `/api/consultar/{nome}` | Retrieves products by name |
+| DELETE | `/api/produtos/{id}`    | Deletes a product          |
 
 - #### Categories
 | Method | Endpoint               | Description                |
