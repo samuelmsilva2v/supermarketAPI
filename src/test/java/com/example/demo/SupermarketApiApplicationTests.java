@@ -21,8 +21,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.example.demo.application.dtos.AutenticarUsuarioRequestDto;
+import com.example.demo.application.dtos.AutenticarUsuarioResponseDto;
 import com.example.demo.application.dtos.CategoriaRequestDto;
 import com.example.demo.application.dtos.CategoriaResponseDto;
+import com.example.demo.application.dtos.CriarUsuarioRequestDto;
+import com.example.demo.application.dtos.CriarUsuarioResponseDto;
 import com.example.demo.application.dtos.ProdutoRequestDto;
 import com.example.demo.application.dtos.ProdutoResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,9 +47,97 @@ class SupermarketApiApplicationTests {
 	private static String nomeCategoriaTeste;
 	private static UUID idProdutoTeste;
 	private static String nomeProdutoTeste;
+	private static String emailUsuarioTeste;
+	private static String senhaUsuarioTeste;
+	private static String tokenUsuarioTeste;
 
 	@Test
 	@Order(1)
+	public void criarUsuarioTest() throws Exception {
+
+		var request = new CriarUsuarioRequestDto();
+		var faker = new Faker();
+
+		request.setNome(faker.name().fullName());
+		request.setEmail(faker.internet().emailAddress());
+		request.setSenha("Senha@123");
+
+		MvcResult result = mockMvc.perform(post("/api/usuario/criar").contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, CriarUsuarioResponseDto.class);
+
+		assertNotNull(response.getId());
+		assertEquals(request.getNome(), response.getNome());
+		assertEquals(request.getEmail(), response.getEmail());
+		assertEquals("Operador", response.getPerfil());
+
+		emailUsuarioTeste = request.getEmail();
+		senhaUsuarioTeste = request.getSenha();
+	}
+
+	@Test
+	@Order(2)
+	public void usuarioComEmailDuplicadoTest() throws Exception {
+
+		var request = new CriarUsuarioRequestDto();
+		request.setNome("Outro Usuario Teste");
+		request.setEmail(emailUsuarioTeste);
+		request.setSenha("Senha@123");
+
+		MvcResult result = mockMvc
+				.perform(post("/api/usuario/criar").contentType("application/json")
+						.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest()).andReturn();
+
+		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertEquals("O e-mail informado já está cadastrado, tente outro.", content);
+	}
+
+	@Test
+	@Order(3)
+	public void credenciaisInvalidasTest() throws Exception {
+
+		var request = new AutenticarUsuarioRequestDto();
+		request.setEmail(emailUsuarioTeste);
+		request.setSenha("SenhaErrada@123");
+
+		MvcResult result = mockMvc
+				.perform(post("/api/usuario/autenticar").contentType("application/json")
+						.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest()).andReturn();
+
+		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertEquals("Acesso negado. Usuário não encontrado.", content);
+	}
+
+	@Test
+	@Order(4)
+	public void autenticarUsuarioTest() throws Exception {
+
+		var request = new AutenticarUsuarioRequestDto();
+		request.setEmail(emailUsuarioTeste);
+		request.setSenha(senhaUsuarioTeste);
+
+		MvcResult result = mockMvc.perform(post("/api/usuario/autenticar").contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, AutenticarUsuarioResponseDto.class);
+
+		assertNotNull(response.getToken());
+		assertEquals(emailUsuarioTeste, response.getEmail());
+
+		tokenUsuarioTeste = response.getToken();
+	}
+
+	@Test
+	@Order(5)
 	public void criarCategoriaTest() throws Exception {
 
 		var request = new CategoriaRequestDto();
@@ -54,6 +146,7 @@ class SupermarketApiApplicationTests {
 		request.setNome(faker.commerce().department());
 
 		MvcResult result = mockMvc.perform(post("/api/categorias").contentType("application/json")
+				.header("Authorization", "Bearer " + tokenUsuarioTeste)
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
 
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -68,7 +161,7 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(2)
+	@Order(6)
 	public void categoriaComNomeDuplicadoTest() throws Exception {
 
 		var request = new CategoriaRequestDto();
@@ -76,6 +169,7 @@ class SupermarketApiApplicationTests {
 
 		MvcResult result = mockMvc
 				.perform(post("/api/categorias").contentType("application/json")
+						.header("Authorization", "Bearer " + tokenUsuarioTeste)
 						.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isBadRequest()).andReturn();
 
@@ -85,7 +179,7 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(3)
+	@Order(7)
 	public void criarProdutoTest() throws Exception {
 
 		var request = new ProdutoRequestDto();
@@ -98,7 +192,9 @@ class SupermarketApiApplicationTests {
 		request.setCategoriaId(idCategoriaTeste);
 
 		MvcResult result = mockMvc.perform(
-				post("/api/produtos").contentType("application/json").content(objectMapper.writeValueAsString(request)))
+				post("/api/produtos").contentType("application/json")
+						.header("Authorization", "Bearer " + tokenUsuarioTeste)
+						.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isOk()).andReturn();
 
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -116,7 +212,7 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(4)
+	@Order(8)
 	public void produtoComNomeDuplicadoTest() throws Exception {
 
 		var request = new ProdutoRequestDto();
@@ -127,6 +223,7 @@ class SupermarketApiApplicationTests {
 
 		MvcResult result = mockMvc
 				.perform(post("/api/produtos").contentType("application/json")
+						.header("Authorization", "Bearer " + tokenUsuarioTeste)
 						.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isBadRequest()).andReturn();
 
@@ -136,10 +233,11 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(5)
+	@Order(9)
 	public void produtoComEstoqueTest() throws Exception {
 
-		MvcResult result = mockMvc.perform(delete("/api/produtos/" + idProdutoTeste).contentType("application/json"))
+		MvcResult result = mockMvc.perform(delete("/api/produtos/" + idProdutoTeste).contentType("application/json")
+				.header("Authorization", "Bearer " + tokenUsuarioTeste))
 				.andExpect(status().isBadRequest()).andReturn();
 
 		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -149,7 +247,7 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(6)
+	@Order(10)
 	public void editarProdutoTest() throws Exception {
 
 		var request = new ProdutoRequestDto();
@@ -162,6 +260,7 @@ class SupermarketApiApplicationTests {
 		request.setCategoriaId(idCategoriaTeste);
 
 		MvcResult result = mockMvc.perform(put("/api/produtos/" + idProdutoTeste).contentType("application/json")
+				.header("Authorization", "Bearer " + tokenUsuarioTeste)
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
 
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -176,10 +275,11 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(7)
+	@Order(11)
 	public void excluirProdutoTest() throws Exception {
 
-		MvcResult result = mockMvc.perform(delete("/api/produtos/" + idProdutoTeste).contentType("application/json"))
+		MvcResult result = mockMvc.perform(delete("/api/produtos/" + idProdutoTeste).contentType("application/json")
+				.header("Authorization", "Bearer " + tokenUsuarioTeste))
 				.andExpect(status().isOk()).andReturn();
 
 		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -188,11 +288,12 @@ class SupermarketApiApplicationTests {
 	}
 
 	@Test
-	@Order(8)
+	@Order(12)
 	public void excluirCategoriaTest() throws Exception {
 
 		MvcResult result = mockMvc
-				.perform(delete("/api/categorias/" + idCategoriaTeste).contentType("application/json"))
+				.perform(delete("/api/categorias/" + idCategoriaTeste).contentType("application/json")
+						.header("Authorization", "Bearer " + tokenUsuarioTeste))
 				.andExpect(status().isOk()).andReturn();
 
 		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);

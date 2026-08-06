@@ -19,7 +19,7 @@ public class JwtBearerFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
 
-		final HttpServletRequest request = (HttpServletRequest) servletResponse;
+		final HttpServletRequest request = (HttpServletRequest) servletRequest;
 		final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
 		var secretKey = "468041be-f345-4188-8136-4bdeef74b376";
@@ -29,7 +29,13 @@ public class JwtBearerFilter extends GenericFilterBean {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+
+		String uri = request.getRequestURI();
+		if (uri.equals("/api/usuario/criar") || uri.equals("/api/usuario/autenticar")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		final String authHeader = request.getHeader("Authorization");
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acesso não autorizado.");
