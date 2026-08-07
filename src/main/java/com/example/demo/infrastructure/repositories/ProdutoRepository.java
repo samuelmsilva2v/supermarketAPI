@@ -14,7 +14,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, UUID> {
 	boolean existsByCategoriaId(UUID categoriaId);
 	
 	boolean existsByNome(String nome);
-	
+
+	boolean existsByNomeAndIdNot(String nome, UUID id);
+
 	@Query("SELECT p FROM Produto p JOIN FETCH p.categoria c WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')) ORDER BY p.nome")
     List<Produto> findByName(@Param("nome") String nome);
 }

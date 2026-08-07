@@ -50,8 +50,8 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 
 	@Override
 	public ProdutoResponseDto atualizarProduto(UUID id, ProdutoRequestDto request) {
-		
-		if (produtoRepository.existsByNome(request.getNome()))
+
+		if (produtoRepository.existsByNomeAndIdNot(request.getNome(), id))
 			throw new ProdutoComNomeDuplicadoException(request.getNome());
 
 		var produto = produtoRepository.findById(id)
