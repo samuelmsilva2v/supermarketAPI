@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.application.dtos.PaginaResponseDto;
 import com.example.demo.application.dtos.ProdutoRequestDto;
 import com.example.demo.application.dtos.ProdutoResponseDto;
 import com.example.demo.domain.services.interfaces.ProdutoDomainService;
@@ -57,9 +59,12 @@ public class ProdutoController {
 		return produtoDomainService.consultarProdutos();
 	}
 	
-	@Operation(summary = "Serviço para consultar produtos por nome.")
-	@GetMapping("/consultar/{nome}")
-	public List<ProdutoResponseDto> getByName(@PathVariable String nome) {
-		return produtoDomainService.consultarProdutoPorNome(nome);
+	@Operation(summary = "Serviço para consultar produtos por nome, paginado.")
+	@GetMapping("/consultar")
+	public PaginaResponseDto<ProdutoResponseDto> getByName(
+			@RequestParam(defaultValue = "") String nome,
+			@RequestParam(defaultValue = "0") int pagina,
+			@RequestParam(defaultValue = "10") int tamanho) {
+		return produtoDomainService.consultarProdutoPorNome(nome, pagina, tamanho);
 	}
 }

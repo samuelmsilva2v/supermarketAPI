@@ -3,6 +3,7 @@ package com.example.demo.domain.services.interfaces;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.application.dtos.PaginaResponseDto;
 import com.example.demo.application.dtos.ProdutoRequestDto;
 import com.example.demo.application.dtos.ProdutoResponseDto;
 
@@ -15,8 +16,8 @@ public interface ProdutoDomainService {
 	public String excluirProduto(UUID id);
 
 	public ProdutoResponseDto consultarProdutoPorId(UUID id);
-	
-	public List<ProdutoResponseDto> consultarProdutoPorNome(String nome);
+
+	public PaginaResponseDto<ProdutoResponseDto> consultarProdutoPorNome(String nome, int pagina, int tamanho);
 
 	public List<ProdutoResponseDto> consultarProdutos();
 }

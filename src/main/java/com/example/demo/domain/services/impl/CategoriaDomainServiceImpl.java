@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.dtos.CategoriaRequestDto;
 import com.example.demo.application.dtos.CategoriaResponseDto;
 import com.example.demo.application.dtos.DashboardResponseDto;
+import com.example.demo.application.dtos.PaginaResponseDto;
 import com.example.demo.domain.exceptions.CategoriaComNomeDuplicadoException;
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
@@ -91,6 +94,13 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 		return categoriaRepository.findAll().stream()
 				.map(categoria -> modelMapper.map(categoria, CategoriaResponseDto.class)).toList();
+	}
+
+	@Override
+	public PaginaResponseDto<CategoriaResponseDto> consultarCategoriaPorNome(String nome, int pagina, int tamanho) {
+		var pageable = PageRequest.of(pagina, tamanho, Sort.by("nome"));
+		var categoriasPage = categoriaRepository.findByNomeContainingIgnoreCase(nome, pageable);
+		return new PaginaResponseDto<>(categoriasPage.map(categoria -> modelMapper.map(categoria, CategoriaResponseDto.class)));
 	}
 
 	@Override

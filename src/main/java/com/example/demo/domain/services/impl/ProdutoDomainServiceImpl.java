@@ -5,8 +5,11 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.application.dtos.PaginaResponseDto;
 import com.example.demo.application.dtos.ProdutoRequestDto;
 import com.example.demo.application.dtos.ProdutoResponseDto;
 import com.example.demo.domain.exceptions.ProdutoComEstoqueException;
@@ -100,9 +103,10 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 	}
 
 	@Override
-	public List<ProdutoResponseDto> consultarProdutoPorNome(String nome) {
-		return produtoRepository.findByName(nome).stream().map(produto -> modelMapper.map(produto, ProdutoResponseDto.class))
-				.toList();
+	public PaginaResponseDto<ProdutoResponseDto> consultarProdutoPorNome(String nome, int pagina, int tamanho) {
+		var pageable = PageRequest.of(pagina, tamanho, Sort.by("nome"));
+		var produtosPage = produtoRepository.findByNomeContaining(nome, pageable);
+		return new PaginaResponseDto<>(produtosPage.map(produto -> modelMapper.map(produto, ProdutoResponseDto.class)));
 	}
 
 }

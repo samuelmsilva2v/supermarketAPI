@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.application.dtos.CategoriaRequestDto;
 import com.example.demo.application.dtos.CategoriaResponseDto;
+import com.example.demo.application.dtos.PaginaResponseDto;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,5 +57,14 @@ public class CategoriaController {
 	@GetMapping
 	public List<CategoriaResponseDto> getAll() {
 		return categoriaDomainService.consultarCategorias();
+	}
+
+	@Operation(summary = "Serviço para consultar categorias por nome, paginado.")
+	@GetMapping("/consultar")
+	public PaginaResponseDto<CategoriaResponseDto> getByName(
+			@RequestParam(defaultValue = "") String nome,
+			@RequestParam(defaultValue = "0") int pagina,
+			@RequestParam(defaultValue = "10") int tamanho) {
+		return categoriaDomainService.consultarCategoriaPorNome(nome, pagina, tamanho);
 	}
 }

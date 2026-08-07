@@ -3,6 +3,8 @@ package com.example.demo.infrastructure.repositories;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,6 +14,8 @@ import com.example.demo.domain.models.entities.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, UUID> {
 
 	boolean existsByNome(String nome);
+
+	Page<Categoria> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
 	@Query(value = """
 	        SELECT
