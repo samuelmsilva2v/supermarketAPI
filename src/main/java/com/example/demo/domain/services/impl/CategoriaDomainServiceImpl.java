@@ -65,16 +65,16 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 	@Override
 	public String excluirCategoria(UUID id) {
-		
-		if (!categoriaRepository.existsById(id))
-			throw new EntityNotFoundException("Categoria com ID " + id + " não encontrada.");
-		
+
+		var categoria = categoriaRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Categoria com ID " + id + " não encontrada."));
+
 		if (produtoRepository.existsByCategoriaId(id))
-	        throw new RuntimeException("Não é possível excluir a categoria ID " + id + " pois existem produtos associados a ela.");
+	        throw new RuntimeException("Não é possível excluir a categoria \"" + categoria.getNome() + "\" pois existem produtos associados a ela.");
 
 		categoriaRepository.deleteById(id);
 
-		return "Categoria excluída com sucesso!";
+		return "Categoria \"" + categoria.getNome() + "\" excluída com sucesso!";
 	}
 
 	@Override

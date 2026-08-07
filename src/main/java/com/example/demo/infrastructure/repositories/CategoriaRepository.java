@@ -14,11 +14,11 @@ public interface CategoriaRepository extends JpaRepository<Categoria, UUID> {
 	boolean existsByNome(String nome);
 
 	@Query(value = """
-	        SELECT 
-	            c.nome as nomeCategoria, 
-	            SUM(p.quantidade) as qtdProdutos
-	        FROM produto p
-	        INNER JOIN categoria c ON c.id = p.categoria_id
+	        SELECT
+	            c.nome as nomeCategoria,
+	            COALESCE(SUM(p.quantidade), 0) as qtdProdutos
+	        FROM categoria c
+	        LEFT JOIN produto p ON p.categoria_id = c.id
 	        GROUP BY c.nome
 	    """, nativeQuery = true)
 	List<DashboardResponseDto> searchQuantityByCategory();

@@ -73,15 +73,15 @@ public class ProdutoDomainServiceImpl implements ProdutoDomainService {
 	@Override
 	public String excluirProduto(UUID id) {
 
-		if (!produtoRepository.existsById(id))
-			throw new EntityNotFoundException("Produto com ID " + id + " não encontrada.");
-		
-		if (produtoRepository.findById(id).get().getQuantidade() > 0)
-			throw new ProdutoComEstoqueException(produtoRepository.findById(id).get().getNome(), produtoRepository.findById(id).get().getQuantidade());
+		var produto = produtoRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Produto com ID " + id + " não encontrada."));
+
+		if (produto.getQuantidade() > 0)
+			throw new ProdutoComEstoqueException(produto.getNome(), produto.getQuantidade());
 
 		produtoRepository.deleteById(id);
 
-		return "Produto excluído com sucesso!";
+		return "Produto \"" + produto.getNome() + "\" excluído com sucesso!";
 	}
 
 	@Override
