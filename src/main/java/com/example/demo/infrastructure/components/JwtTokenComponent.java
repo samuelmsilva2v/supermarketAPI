@@ -21,7 +21,7 @@ public class JwtTokenComponent {
 		// Chave para assinatura dos tokens
 		var secretKey = "468041be-f345-4188-8136-4bdeef74b376";
 
-		return Jwts.builder().setSubject(usuario.getEmail()) // E-mail do usuário
+		return Jwts.builder().setSubject(usuario.getUsername()) // Username do usuário
 				.claim("perfil", usuario.getPerfil().getNome()) // Perfil do usuário
 				.setIssuedAt(new Date()) // Data de geração do token
 				.setExpiration(new Date(System.currentTimeMillis() + 1800000)) // Data de expiração do token (30min)

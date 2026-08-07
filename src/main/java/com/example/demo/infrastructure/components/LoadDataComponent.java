@@ -28,6 +28,12 @@ public class LoadDataComponent implements ApplicationRunner {
 	@Value("${app.admin.nome}")
 	private String adminNome;
 
+	@Value("${app.admin.sobrenome}")
+	private String adminSobrenome;
+
+	@Value("${app.admin.username}")
+	private String adminUsername;
+
 	@Value("${app.admin.email}")
 	private String adminEmail;
 
@@ -58,12 +64,14 @@ public class LoadDataComponent implements ApplicationRunner {
 
 	private void seedAdminUsuario() {
 
-		if (usuarioRepository.findByEmail(adminEmail) != null)
+		if (usuarioRepository.findByUsername(adminUsername) != null)
 			return;
 
 		var usuario = new Usuario();
 		usuario.setId(UUID.randomUUID());
 		usuario.setNome(adminNome);
+		usuario.setSobrenome(adminSobrenome);
+		usuario.setUsername(adminUsername);
 		usuario.setEmail(adminEmail);
 		usuario.setSenha(sha256Component.encrypt(adminSenha));
 		usuario.setPerfil(perfilRepository.findByNome("Administrador"));

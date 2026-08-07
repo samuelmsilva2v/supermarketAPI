@@ -31,7 +31,7 @@ public class JwtBearerFilter extends GenericFilterBean {
 		}
 
 		String uri = request.getRequestURI();
-		if (uri.equals("/api/usuario/criar") || uri.equals("/api/usuario/autenticar")) {
+		if (uri.equals("/api/usuario/autenticar")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -42,13 +42,19 @@ public class JwtBearerFilter extends GenericFilterBean {
 
 			return;
 		}
-		
+
 		try {
 			final String token = authHeader.substring(7);
 			Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+
+			if (uri.equals("/api/usuario/criar") && !"Administrador".equals(claims.get("perfil", String.class))) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acesso restrito a administradores.");
+				return;
+			}
+
 			request.setAttribute("claims", claims);
 			filterChain.doFilter(request, response);
-		} 
+		}
 		catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido ou expirado.");
 		}

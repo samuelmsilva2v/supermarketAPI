@@ -19,6 +19,12 @@ public class Usuario {
 	@Column(length = 50, nullable = false)
 	private String nome;
 
+	@Column(length = 50, nullable = false)
+	private String sobrenome;
+
+	@Column(length = 50, nullable = false, unique = true)
+	private String username;
+
 	@Column(length = 50, nullable = false, unique = true)
 	private String email;
 

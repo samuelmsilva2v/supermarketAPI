@@ -122,7 +122,7 @@ mvn spring-boot:run
 A Supermarket API — incluindo cadastro, login e autenticação de usuários, que agora fazem parte da própria API — estará disponível em http://localhost:8080/swagger-ui/index.html#/.
 
 Na primeira execução um usuário administrador padrão é criado automaticamente (configurável em `application.properties`, propriedades `app.admin.*`):
-- **E-mail:** `admin@supermarket.com`
+- **Username:** `admin`
 - **Senha:** `Admin@123`
 
 > Essas são credenciais de desenvolvimento/estudo. Troque-as antes de qualquer uso além de testes locais.
@@ -270,7 +270,7 @@ mvn spring-boot:run
 The Supermarket API — including user registration, login and authentication, which are now part of the API itself — will be available at http://localhost:8080/swagger-ui/index.html#/.
 
 On the first run, a default admin user is created automatically (configurable in `application.properties`, `app.admin.*` properties):
-- **Email:** `admin@supermarket.com`
+- **Username:** `admin`
 - **Password:** `Admin@123`
 
 > These are development/study credentials. Change them before any use beyond local testing.
